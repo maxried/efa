@@ -66,15 +66,16 @@ def do_api_call(station, line, direction, warn, crit):
         if (line is not None and delay is not None and
                 sdirection is not None and sdirection_code is not None):
             if sline == line and direction == sdirection_code:
+                delay = int(delay)
                 severity = 'UNKOWN' # Default
-                if int(delay) >= crit:
+                if delay >= crit:
                     severity = 'CRITICAL'
-                elif int(delay) >= warn:
+                elif delay >= warn:
                     severity = 'WARNING'
                 else:
                     severity = 'OK'
                 
-                return severity + ' - ' + sline + ' -> "' + sdirection + '" ('  + sdirection_code + '): ' + delay + ' min | delay=' + str(delay * 60) + 's'
+                return severity + ' - ' + sline + ' -> "' + sdirection + '" ('  + sdirection_code + '): ' + str(delay) + ' min | delay=' + str(delay * 60) + 's'
 
 
     return 'OK - Did not find any delay info of ' + str(line) + ' direction (' + str(direction) + ') on station "' + str(sstation) + '" (' + str(station) + ')'

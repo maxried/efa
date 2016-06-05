@@ -59,6 +59,7 @@ def do_api_call(station, line, direction, warn, crit):
         sdirection = leaf_line.attrib.get('direction')
         sdirection_code = leaf_mota_params.attrib.get('direction')
         
+
         if not is_int(delay) and delay is not None:
             return 'UNKNOWN - Could not interpret delay: ' + str(delay)
 
@@ -73,10 +74,10 @@ def do_api_call(station, line, direction, warn, crit):
                 else:
                     severity = 'OK'
                 
-                return severity + ' - ' + sline + ' -> "' + sdirection + '" ('  + sdirection_code + '): ' + delay + ' | delay=' + str(delay)
+                return severity + ' - ' + sline + ' -> "' + sdirection + '" ('  + sdirection_code + '): ' + delay + ' min | delay=' + str(delay)
 
 
-    return 'UNKNOWN - Did not find any departures of ' + line + ' direction (' + direction + ') on stop "' + sstation + '" (' + station + ')'
+    return 'UNKNOWN - Did not find any delay info of ' + str(line) + ' direction (' + str(direction) + ') on station "' + str(sstation) + '" (' + str(station) + ')'
     
 
 def main():

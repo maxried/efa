@@ -77,7 +77,7 @@ def do_api_call(station, line, direction, warn, crit):
                 return severity + ' - ' + sline + ' -> "' + sdirection + '" ('  + sdirection_code + '): ' + delay + ' min | delay=' + str(delay)
 
 
-    return 'UNKNOWN - Did not find any delay info of ' + str(line) + ' direction (' + str(direction) + ') on station "' + str(sstation) + '" (' + str(station) + ')'
+    return 'OK - Did not find any delay info of ' + str(line) + ' direction (' + str(direction) + ') on station "' + str(sstation) + '" (' + str(station) + ')'
     
 
 def main():

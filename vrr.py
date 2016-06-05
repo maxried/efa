@@ -59,7 +59,7 @@ def do_api_call(station, line, direction, warn, crit):
         sdirection = leaf_line.attrib.get('direction')
         sdirection_code = leaf_mota_params.attrib.get('direction')
         
-        if not is_int(delay):
+        if not is_int(delay) and delay is not None:
             return 'UNKNOWN - Could not interpret delay: ' + str(delay)
 
         if (line is not None and delay is not None and

@@ -5,6 +5,14 @@ import urllib.parse
 import sys
 import xml.etree.ElementTree as etree
 
+def is_int(s):
+    try:
+        int(s)
+    except Exception:
+        return False
+    
+    return True
+
 def main():
     stationname = urllib.parse.quote(sys.argv[1])
     xml = ""
@@ -18,7 +26,9 @@ def main():
     
     
     for i in deps:
-        print(i.attrib.get('id') + ": " + i.text)
+        id = i.attrib.get('stateless')
+        if is_int(id):
+            print(id + ": " + i.text)
 
         
 if __name__ == "__main__":

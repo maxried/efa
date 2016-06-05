@@ -26,7 +26,7 @@ def do_api_call(station):
     url += 'ptOptionsActive=1&'
     url += 'deleteAssignedStops_dm=1&'
     url += 'mergeDep=1&'
-    url += 'limit=25'
+    url += 'limit=250'
 
     try:
         with urllib.request.urlopen(url) as response:

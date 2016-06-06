@@ -91,7 +91,7 @@ def do_api_call(station, line, direction, warn, crit):
 
                 if delay == 0:
                     return (severity + ' - ' + sline + ' -> "' + sdirection + ': ' + sdate + ' (in time) | delay=0s\n' +
-                            'Summary:\nLine ' + sline + ', direction "' + sdirection + '", is in time at stop "' + sstation + '". The scheduled time is ' + sdate + '.')
+                            'Summary:\nLine ' + sline + ', direction "' + sdirection + '", is in time at stop "' + sstation + '". The scheduled departure is ' + sdate + '.')
                 else:
                     return (severity + ' - ' + sline + ' -> "' + sdirection + ': ' + sdate + ' (delayed by ' + str(delay) + ' min) | delay=' +  str(delay * 60) + 's\n' +
                             'Summary:\nLine ' + sline + ', direction "' + sdirection + '", is late by ' + str(delay) + ' minutes on stop "' + sstation + '". Its scheduled departured was ' + sdate + '.')

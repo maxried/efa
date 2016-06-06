@@ -48,17 +48,30 @@ def do_api_call(station, line, direction, warn, crit):
     for i in tree_deps:
         try:
             leaf_line = i.find('itdServingLine')
-            leaf_delay = leaf_line.find('itdNoTrain')
+            leaf_notrain = leaf_line.find('itdNoTrain')
             leaf_mota_params = leaf_line.find('motDivaParams')
+            leaf_datetime = i.find('itdDateTime')
+            leaf_datetime_date = leaf_datetime.find('itdDate')
+            leaf_datetime_time = leaf_datetime.find('itdTime')
         except Exception:
             return 'UNKNOWN - Could not interpred xml: departure '
 
 
         sline = leaf_line.attrib.get('number')
-        delay = leaf_delay.attrib.get('delay')
+        delay = leaf_notrain.attrib.get('delay')
         sdirection = leaf_line.attrib.get('direction')
         sdirection_code = leaf_mota_params.attrib.get('direction')
+        sdate = 'no date'
+
+        dt = (leaf_datetime_date.attrib.get('year'),
+              leaf_datetime_date.attrib.get('month'),
+              leaf_datetime_date.attrib.get('day'),
+              leaf_datetime_time.attrib.get('hour'),
+              leaf_datetime_time.attrib.get('minute'))  
         
+        if (is_int(dt[0]) and is_int(dt[1]) and is_int(dt[2]) and 
+            is_int(dt[3]) and is_int(dt[4])):
+            sdate = '{:04d}-{:02}-{:02} at {:02}:{:02}'.format(int(dt[0]), int(dt[1]), int(dt[2]), int(dt[3]), int(dt[4]))
 
         if not is_int(delay) and delay is not None:
             return 'UNKNOWN - Could not interpret delay: ' + str(delay)
@@ -74,9 +87,16 @@ def do_api_call(station, line, direction, warn, crit):
                     severity = 'WARNING'
                 else:
                     severity = 'OK'
-                
-                return severity + ' - ' + sline + ' -> "' + sdirection + '" ('  + sdirection_code + '): ' + str(delay) + ' min | delay=' + str(delay * 60) + 's'
 
+
+                if delay == 0:
+                    return (severity + ' - ' + sline + ' -> "' + sdirection + ': ' + sdate + ' (in time) | delay=0s\n' +
+                            'Summary:\nLine ' + sline + ', direction "' + sdirection + '", is in time at stop "' + sstation + '". The scheduled time is ' + sdate + '.')
+                else:
+                    return (severity + ' - ' + sline + ' -> "' + sdirection + ': ' + sdate + ' (delayed by ' + str(delay) + ' min) | delay=' +  str(delay * 60) + 's\n' +
+                            'Summary:\nLine ' + sline + ', direction "' + sdirection + '", is late by ' + str(delay) + ' minutes on stop "' + sstation + '". Its scheduled departured was ' + sdate + '.')
+
+                
 
     return 'OK - Did not find any delay info of ' + str(line) + ' direction (' + str(direction) + ') on station "' + str(sstation) + '" (' + str(station) + ')'
     

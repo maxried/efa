@@ -46,7 +46,7 @@ def do_api_call(station):
     print("Station: " + sstation + ', ' + splace)
     
     lines = []
-    max = (0,0,0,0)
+    max = (len('Operator'),len('Line'),len('Description'),1)
     
     for i in tree_lines:
         operator = ''
